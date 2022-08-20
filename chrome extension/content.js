@@ -10,8 +10,6 @@ function receiveMessage(request, sender, sendResponse) {
 		var numberIndex = element.match(numberRegex);
 		var price = element.substring(numberIndex.index);
 
-		console.log("checking + " + request.url + "\nprice: " + price);
-
 		var msg = {
 			from: "content",
 			price: price
