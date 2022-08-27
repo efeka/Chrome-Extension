@@ -1,0 +1,59 @@
+Sub Tefas_Güncel()
+'
+' Tefas_Güncel Macro
+'
+' Keyboard Shortcut: Ctrl+t
+'
+    
+    Application.DisplayAlerts = False
+    Dim sht As Worksheet
+    On Error Resume Next
+        Set sht = ThisWorkbook.Sheets("Tefas Güncel")
+    On Error GoTo 0
+    If sht Is Nothing Then
+        ThisWorkbook.Sheets.Add(After:=Sheets(Sheets.Count)).Name = "Tefas Güncel"
+    End If
+    
+    Sheets("Tefas Güncel").Select
+    Dim myFile As String, text As String, textline As String
+
+    myFile = "C:\Users\efeka\Downloads\TefasRecentPrices.txt"
+    Open myFile For Input As #1
+        
+    ' Read the file and store it into the text String
+    Do Until EOF(1)
+        Line Input #1, textline
+        text = text & textline
+    Loop
+    Close #1
+    
+    Dim data() As String, I As Variant
+    data = Split(text, "_")
+    
+    Dim size As Integer
+    size = UBound(data) - LBound(data) + 1
+    
+    Range("$A$1").Select
+    Dim x As Integer
+    For x = 0 To size - 1
+        ActiveCell.Value = data(x)
+        ActiveCell.Offset(1, 0).Select
+    Next
+    
+    Range("$A$1:$A$99").Select
+    Selection.TextToColumns Destination:=Range("$A$1"), DataType:=xlFixedWidth, _
+        FieldInfo:=Array(Array(0, 1), Array(3, 1)), TrailingMinusNumbers:=True
+    
+    Application.DisplayAlerts = True
+    
+    ' Delete extra files coming from the chrome extension
+    On Error Resume Next
+    For x = 1 To 99
+        file = "C:\Users\efeka\Downloads\TefasRecentPrices (" & x & ").txt"
+        Kill file
+    Next
+    file = "C:\Users\efeka\Downloads\TefasRecentPrices.txt"
+    Kill file
+    On Error GoTo 0
+    
+End Sub
