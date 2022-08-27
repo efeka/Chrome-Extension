@@ -29,13 +29,16 @@ function sendMessageToBackground() {
 
 function addCodeToList() {
 	var code = document.getElementById("textArea").value;
-	document.getElementById("textArea").value = "";
-	createButton(code);
-	var msg = {
-		txt: "updateCodes",
-		codes: buttons
+	if (code.length === 3) {
+		document.getElementById("textArea").value = "";
+		code = code.toUpperCase(code);
+		createButton(code);
+		var msg = {
+			txt: "updateCodes",
+			codes: buttons
+		}
+		chrome.runtime.sendMessage(msg);
 	}
-	chrome.runtime.sendMessage(msg);		
 }
 
 // Receive codes from storage
