@@ -14,6 +14,13 @@
 			background: linear-gradient(to top, #202035 0%, #242424 100%);
 			font-family: Candara, Arial, Tahoma, Serif;
 		}
+
+	    button {
+	      border: 2px solid black;
+	    }
+	    button:hover {
+	      border-color: white;
+	    }
 	</style>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="popup.js"></script>
@@ -21,18 +28,31 @@
 
 <div style="text-align: center">
 	<body>
-		<img src="icon.png" style="margin-top: 10px">
+		<img src="/images/icon.png" style="margin-top: 10px">
 
-		<h1 style="font-size:140%; font-family: Arial, Helvetica, sans-serif; color: white; text-align: center">Tefas Güncel Fiyatlar</h1>
+		<h1 style="font-size:140%; font-family: Arial, Helvetica, sans-serif; color: white; text-align: center">Güncel Fiyatlar</h1>
 		<hr>
 
-		<div id="codeList" style="max-height: 80px; min-height: 80px; overflow: scroll; overflow-x: hidden;color: white; font-family: Candara, sans-serif; font-size: 130%; margin-top: 15px; margin-left: 18px"></div>
+		<!--fieldset-->
+    	<legend style="font-size:110%; font-family: Arial, Helvetica, sans-serif; color: white; text-align: center"><strong></strong></legend-->
+			
+		<!--input type="radio" id="hisse" name="choice">
+		<label for="hisse">Hisseler</label><br>
+		<input type="radio" id="fon" name="choice">
+		<label for="fon">Fonlar</label-->
+
+		<button id="hisseler" style="text-align: center;  width: 60px; font-family: Candara, sans-serif; background: #22AAFF;"><strong>Hisseler</strong></button>
+		<button id="fonlar" style="text-align: center;  width: 60px; font-family: Candara, sans-serif; background: #808080;"><strong>Fonlar</strong></button>
+
+		<div id="hisseCodeList" style="display: block; max-height: 80px; min-height: 80px; overflow: scroll; overflow-x: hidden;color: white; font-family: Candara, sans-serif; font-size: 130%; margin-top: 15px; margin-left: 18px"></div>
+		<div id="fonCodeList" style="display: none; max-height: 80px; min-height: 80px; overflow: scroll; overflow-x: hidden;color: white; font-family: Candara, sans-serif; font-size: 130%; margin-top: 15px; margin-left: 18px"></div>
+
+    	<!--/fieldset-->
 
 		<div style="display: inline-flex; margin-top: 10px; margin-bottom: 5px">
-	    	<textarea id="textArea" rows="1" cols="10" style="resize: none; text-align: center"></textarea>
-	    	
-	    	<button id="addCode" style="background: #77CC77;"><strong>Ekle</strong></button>
-    	</div>
+		   	<textarea id="textArea" rows="1" cols="10" style="resize: none; text-align: center"></textarea>   
+		    <button id="addCode" style="background: #77CC77;"><strong>Ekle</strong></button>
+	    </div>
 
 		<hr>
 		<button id="fetchPrices" style="text-align: center;  width: 100px; font-family: Candara, sans-serif; background: #22AAFF;"><strong>Fiyatları Bul</strong></button>
