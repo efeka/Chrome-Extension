@@ -1,1 +1,0 @@
-=XLOOKUP(LEFT($K2; 3);'Tefas Güncel'!$A$1:$A$99;'Tefas Güncel'!$B$1:$B$99;0)
