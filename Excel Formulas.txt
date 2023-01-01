@@ -1,7 +1,7 @@
-Hisseler için:
-$H2: mevcut hisse kodları
-formül güncel hisse fiyat sütununa yazılacak
-=EĞERHATA(DÜŞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIŞ);0)
+Formüller güncel fiyatların yazılacağı hücreye konulacak
 
-Fonlar için
-$A$1 $A$2 yapılacak
+Fon formülü, D sütunu fon kodlarının olduğu sütunla değiştirilecek.
+EĞERHATA(DÜŞEYARA($D3;'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIŞ);0)
+
+Hisse formülü, H sütunu hisse kodlarının olduğu sütunla değiştirilecek.
+EÐERHATA(DÜŞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIŞ);0)

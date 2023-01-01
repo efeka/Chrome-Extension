@@ -37,47 +37,62 @@ Sub Güncel_Fiyatlar()
     fonData = Split(data(0), "_")
     hisseData = Split(data(1), "_")
     
+    ' Calculate the number of rows for each list
     Dim fonlar() As Variant, hisseler() As Variant
     Dim fonRows As Long, hisseRows As Long
     fonRows = UBound(fonData)
     hisseRows = UBound(hisseData)
     
+    ' Check if the lists are empty
+    Dim fonListIsEmpty As Boolean, hisseListIsEmpty As Boolean
+    fonListIsEmpty = (fonRows = -1)
+    hisseListIsEmpty = (hisseRows = -1)
+    
     ' Split each value into the arrays named fonlar and hisseler
-    ReDim fonlar(0 To fonRows, 0 To 1)
     Dim splitValues As Variant
-    For i = 0 To fonRows
-        splitValues = Split(fonData(i), " ")
-        fonlar(i, 0) = splitValues(0)
-        fonlar(i, 1) = splitValues(1)
-    Next i
-    ReDim hisseler(0 To hisseRows, 0 To 1)
-    For i = 0 To hisseRows
-        splitValues = Split(hisseData(i), " ")
-        hisseler(i, 0) = splitValues(0)
-        hisseler(i, 1) = splitValues(1)
-    Next i
+    If Not fonListIsEmpty Then
+        ReDim fonlar(0 To fonRows, 0 To 1)
+        For i = 0 To fonRows
+            splitValues = Split(fonData(i), " ")
+            fonlar(i, 0) = splitValues(0)
+            fonlar(i, 1) = splitValues(1)
+        Next i
+    End If
+
+    If Not hisseListIsEmpty Then
+        ReDim hisseler(0 To hisseRows, 0 To 1)
+        For i = 0 To hisseRows
+            splitValues = Split(hisseData(i), " ")
+            hisseler(i, 0) = splitValues(0)
+            hisseler(i, 1) = splitValues(1)
+        Next i
+    End If
         
     ' Write the data into the current sheet
-    Range("$A$2").Select
-    For i = 0 To fonRows
-        ActiveCell.Value = fonlar(i, 0)
-        ActiveCell.Offset(0, 1).Select
-        ActiveCell.Value = fonlar(i, 1)
-        ActiveCell.Value = CDbl(fonlar(i, 1))
-        ActiveCell.Offset(1, -1).Select
-    Next i
+    If Not fonListIsEmpty Then
+        Range("$A$2").Select
+        For i = 0 To fonRows
+            ActiveCell.Value = fonlar(i, 0)
+            ActiveCell.Offset(0, 1).Select
+            ActiveCell.Value = fonlar(i, 1)
+            ActiveCell.Value = CDbl(fonlar(i, 1))
+            ActiveCell.Offset(1, -1).Select
+        Next i
+    End If
     
-    Range("$D$2").Select
-    For i = 0 To hisseRows
-        ActiveCell.Value = hisseler(i, 0)
-        ActiveCell.Offset(0, 1).Select
-        ActiveCell.Value = hisseler(i, 1)
-        ActiveCell.Value = CDbl(hisseler(i, 1))
-        ActiveCell.Offset(1, -1).Select
-    Next i
+    If Not hisseListIsEmpty Then
+        Range("$D$2").Select
+        For i = 0 To hisseRows
+            ActiveCell.Value = hisseler(i, 0)
+            ActiveCell.Offset(0, 1).Select
+            ActiveCell.Value = hisseler(i, 1)
+            ActiveCell.Value = CDbl(hisseler(i, 1))
+            ActiveCell.Offset(1, -1).Select
+        Next i
+    End If
 
     Range("$B$2:$B$99").NumberFormat = "0.00"
-    Range("$B$2:$B$99").NumberFormat = "0.00"
+    Range("$E$2:$E$99").NumberFormat = "0.00"
     
     ' Add titles and format the cells for a better look
     Range("$A$1").Value = "Fon"
@@ -121,15 +136,21 @@ Sub Güncel_Fiyatlar()
         End If
     Next
     
+    Range("$H$4").Value = "Formüller güncel fiyatlarýn yazýlacaðý hücreye konulacak"
+    Range("$H$5").Value = "Fon formülü, D sütunu fon kodlarýnýn olduðu sütunla deðiþtirilecek"
+    Range("$H$6").Value = "EÐERHATA(DÜÞEYARA($D3;'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIÞ);0)"
+    Range("$H$7").Value = "Hisse formülü, H sütunu hisse kodlarýnýn olduðu sütunla deðitirilecek"
+    Range("$H$8").Value = "EÐERHATA(DÜÞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIÞ);0)"
+    
     ' Delete extra files coming from the chrome extension
-    On Error Resume Next
-    For x = 1 To 99
-        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar (" & x & ").txt"
-        Kill file
-    Next
-        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
-        Kill file
-    On Error GoTo 0
+    'On Error Resume Next
+    'For x = 1 To 99
+    '    file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar (" & x & ").txt"
+    '    Kill file
+    'Next
+    '    file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
+    '    Kill file
+    'On Error GoTo 0
     
     Range("$A$1").Select
     Application.DisplayAlerts = True

@@ -69,6 +69,7 @@ function receiveMessage(request, sender, sendResponse) {
 			}
 		}
 
+		finalResults = finalResults.replace("undefined 0", "");
 		var fileName = "BorsaGuncelFiyatlar.txt";
 		saveData(finalResults, fileName);
 	}	
