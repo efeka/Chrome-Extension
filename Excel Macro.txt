@@ -1,0 +1,137 @@
+Sub Güncel_Fiyatlar()
+'
+' Güncel_Fiyatlar Makro
+'
+' Klavye Kisayolu: Ctrl+t
+'
+
+    Application.DisplayAlerts = False
+    
+    ' Create a new sheet named Güncel Fiyatlar if it does not already exist
+    Dim sht As Worksheet
+    On Error Resume Next
+        Set sht = ThisWorkbook.Sheets("Güncel Fiyatlar")
+    On Error GoTo 0
+    If sht Is Nothing Then
+        ThisWorkbook.Sheets.Add(After:=Sheets(Sheets.Count)).Name = "Güncel Fiyatlar"
+    End If
+    
+    Sheets("Güncel Fiyatlar").Select
+    Sheets("Güncel Fiyatlar").UsedRange.Clear ' Clear the entire sheet
+    Dim myFile As String, text As String, textline As String
+    
+    ' Take the input file from the Downloads folder
+    myFile = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
+    Open myFile For Input As #1
+    
+    ' Read the input file and store it in the text variable
+    Do Until EOF(1)
+        Line Input #1, textline
+        text = text & textline
+    Loop
+    Close #1
+    
+    ' Split the data into fonData and hisseData arrays
+    Dim data() As String, fonData() As String, hisseData() As String, i As Variant
+    data = Split(text, "*")
+    fonData = Split(data(0), "_")
+    hisseData = Split(data(1), "_")
+    
+    Dim fonlar() As Variant, hisseler() As Variant
+    Dim fonRows As Long, hisseRows As Long
+    fonRows = UBound(fonData)
+    hisseRows = UBound(hisseData)
+    
+    ' Split each value into the arrays named fonlar and hisseler
+    ReDim fonlar(0 To fonRows, 0 To 1)
+    Dim splitValues As Variant
+    For i = 0 To fonRows
+        splitValues = Split(fonData(i), " ")
+        fonlar(i, 0) = splitValues(0)
+        fonlar(i, 1) = splitValues(1)
+    Next i
+    ReDim hisseler(0 To hisseRows, 0 To 1)
+    For i = 0 To hisseRows
+        splitValues = Split(hisseData(i), " ")
+        hisseler(i, 0) = splitValues(0)
+        hisseler(i, 1) = splitValues(1)
+    Next i
+        
+    ' Write the data into the current sheet
+    Range("$A$2").Select
+    For i = 0 To fonRows
+        ActiveCell.Value = fonlar(i, 0)
+        ActiveCell.Offset(0, 1).Select
+        ActiveCell.Value = fonlar(i, 1)
+        ActiveCell.Value = CDbl(fonlar(i, 1))
+        ActiveCell.Offset(1, -1).Select
+    Next i
+    
+    Range("$D$2").Select
+    For i = 0 To hisseRows
+        ActiveCell.Value = hisseler(i, 0)
+        ActiveCell.Offset(0, 1).Select
+        ActiveCell.Value = hisseler(i, 1)
+        ActiveCell.Value = CDbl(hisseler(i, 1))
+        ActiveCell.Offset(1, -1).Select
+    Next i
+
+    Range("$B$2:$B$99").NumberFormat = "0.00"
+    Range("$B$2:$B$99").NumberFormat = "0.00"
+    
+    ' Add titles and format the cells for a better look
+    Range("$A$1").Value = "Fon"
+    Range("$A$1").Font.Bold = True
+    Range("$A$1").HorizontalAlignment = xlHAlignCenter
+    Range("$B$1").Value = "Fiyat"
+    Range("$B$1").Font.Bold = True
+    Range("$B$1").HorizontalAlignment = xlHAlignCenter
+    Range("$D$1").Value = "Hisse"
+    Range("$D$1").Font.Bold = True
+    Range("$D$1").HorizontalAlignment = xlHAlignCenter
+    Range("$E$1").Value = "Fiyat"
+    Range("$E$1").Font.Bold = True
+    Range("$E$1").HorizontalAlignment = xlHAlignCenter
+    
+    Range("$A$1:$B$1").Interior.Color = RGB(255, 214, 151)
+    Range("$A$1:$B$1").Borders.LineStyle = xlContinuous
+    Range("$A$1:$B$1").Borders.Color = vbWhite
+    Range("$A$1:$B$1").HorizontalAlignment = xlHAlignCenter
+    Range("$D$1:$E$1").Interior.Color = RGB(255, 214, 151)
+    Range("$D$1:$E$1").Borders.LineStyle = xlContinuous
+    Range("$D$1:$E$1").Borders.Color = vbWhite
+    Range("$D$1:$E$1").HorizontalAlignment = xlHAlignCenter
+    
+    Dim range1 As Range, range2 As Range, cell As Range
+    Set range1 = Range("$A$2:$B$99")
+    Set range2 = Range("$D$2:$E$99")
+    
+    For Each cell In range1
+        If Not Trim(cell.Value) = "" Then
+            cell.Interior.Color = RGB(176, 214, 173) ' Set the background color
+            cell.Borders.LineStyle = xlContinuous ' Set the line style to continuous
+            cell.Borders.Color = vbWhite ' Set the border color to white
+        End If
+    Next
+    For Each cell In range2
+        If Not Trim(cell.Value) = "" Then
+            cell.Interior.Color = RGB(135, 206, 235)
+            cell.Borders.LineStyle = xlContinuous
+            cell.Borders.Color = vbWhite
+        End If
+    Next
+    
+    ' Delete extra files coming from the chrome extension
+    On Error Resume Next
+    For x = 1 To 99
+        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar (" & x & ").txt"
+        Kill file
+    Next
+        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
+        Kill file
+    On Error GoTo 0
+    
+    Range("$A$1").Select
+    Application.DisplayAlerts = True
+    
+End Sub
