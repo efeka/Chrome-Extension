@@ -36,26 +36,31 @@ function sendMessageToBackground() {
 	var msg = {
 		txt: "popup"
 	}
-	chrome.runtime.sendMessage(msg);	
+	chrome.runtime.sendMessage(msg);
 }
 
 function addCodeToList() {
-	var code = document.getElementById("textArea").value;
+	// Format the space separated inputs and put them in an array
+	var codes = document.getElementById("textArea").value.toUpperCase().trim().replace(/\s+/g, " ").split(" ").sort();
 	document.getElementById("textArea").value = "";
-	code = code.toUpperCase(code).trim();
-	if (code.length >= 3) {
-		if (selectedMode === Options.Fon)
-			createButton(code, Options.Fon);
-		else if (selectedMode === Options.Hisse)
-			createButton(code, Options.Hisse);
 
-		var msg = {
-			txt: "updateCodes",
-			fonCodes: fonButtons,
-			hisseCodes: hisseButtons
+	// Add the given codes as buttons to the appropriate list
+	for (var i = 0; i < codes.length; i++) {
+		if (codes[i].length >= 3) {
+			if (selectedMode === Options.Fon)
+				createButton(codes[i], Options.Fon);
+			else if (selectedMode === Options.Hisse)
+				createButton(codes[i], Options.Hisse);
 		}
-		chrome.runtime.sendMessage(msg);
 	}
+
+	// Send the inputted codes to the background script so that they can be saved into the local storage
+	var msg = {
+		txt: "updateCodes",
+		fonCodes: fonButtons,
+		hisseCodes: hisseButtons
+	}
+	chrome.runtime.sendMessage(msg);	
 }
 
 // Receive codes from storage

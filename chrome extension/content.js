@@ -43,36 +43,34 @@ function receiveMessage(request, sender, sendResponse) {
 				}
 			}
 
+			// window.alert("Bilinmeyen hisse kodları: " + hisseCodes);
+			
 			// After fetching the prices, send them back to the background script
 			var msg = {
 				txt: "fetchedHisseData",
 				hisseResults: fetchedResults
 			}
-			window.alert("Bilinmeyen hisse kodları: " + hisseCodes);
 			chrome.runtime.sendMessage(msg);
 		}
 	}
 	else if (request.txt === "saveResults") {
-		var finalFonResults = "";
+		var finalResults = "";
 		for (var i = 0; i < request.fonData.length; i++) {
-			finalFonResults += request.fonData[i];
+			finalResults += request.fonData[i];
 			if (i < request.fonData.length - 1) {
-				finalFonResults += "*";
+				finalResults += "#";
 			}
 		}
-
-		var finalHisseResults = "";
+		finalResults += "*";
 		for (var i = 0; i < request.hisseData.length; i++) {
-			finalHisseResults += request.hisseData[i];
+			finalResults += request.hisseData[i];
 			if (i < request.hisseData.length - 1) {
-				finalHisseResults += "*";
+				finalResults += "#";
 			}
 		}
 
-		var fileName1 = "GuncelFonFiyatlari.txt";
-		var fileName2 = "GuncelHisseFiyatlari.txt";
-		saveData(finalFonResults, fileName1);
-		saveData(finalHisseResults, fileName2);
+		var fileName = "BorsaGuncelFiyatlar.txt";
+		saveData(finalResults, fileName);
 	}	
 }
 
@@ -81,7 +79,7 @@ var saveData = (function () {
     document.body.appendChild(a);
     a.style = "display: none";
     return function (data, fileName) {
-        var json = JSON.stringify(data).replaceAll("\"", "").replaceAll("*", "_"),
+        var json = JSON.stringify(data).replaceAll("\"", "").replaceAll("#", "_"),
             blob = new Blob([json], {type: "octet/stream"}),
             url = window.URL.createObjectURL(blob);
         a.href = url;
