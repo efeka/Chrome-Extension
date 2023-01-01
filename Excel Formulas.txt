@@ -1,7 +1,7 @@
 Formüller güncel fiyatların yazılacağı hücreye konulacak
 
-Fon formülü, D sütunu fon kodlarının olduğu sütunla değiştirilecek.
-EĞERHATA(DÜŞEYARA($D3;'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIŞ);0)
+Fon formülü, K sütunu fon kodlarının olduğu sütunla değiştirilecek.
+EĞERHATA(DÜŞEYARA(SOLDAN($K2; 3);'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIŞ);0)
 
 Hisse formülü, H sütunu hisse kodlarının olduğu sütunla değiştirilecek.
-EÐERHATA(DÜŞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIŞ);0)
+EĞERHATA(DÜŞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIŞ);0)

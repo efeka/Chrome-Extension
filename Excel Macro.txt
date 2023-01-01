@@ -137,20 +137,20 @@ Sub Güncel_Fiyatlar()
     Next
     
     Range("$H$4").Value = "Formüller güncel fiyatlarýn yazýlacaðý hücreye konulacak"
-    Range("$H$5").Value = "Fon formülü, D sütunu fon kodlarýnýn olduðu sütunla deðiþtirilecek"
-    Range("$H$6").Value = "EÐERHATA(DÜÞEYARA($D3;'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIÞ);0)"
+    Range("$H$5").Value = "Fon formülü, K sütunu fon kodlarýnýn olduðu sütunla deðiþtirilecek"
+    Range("$H$6").Value = "EÐERHATA(DÜÞEYARA(SOLDAN($K2; 3);'Güncel Fiyatlar'!$A$2:$B$99;2;YANLIÞ);0)"
     Range("$H$7").Value = "Hisse formülü, H sütunu hisse kodlarýnýn olduðu sütunla deðitirilecek"
     Range("$H$8").Value = "EÐERHATA(DÜÞEYARA($H2;'Güncel Fiyatlar'!$D$2:$E$99;2;YANLIÞ);0)"
     
     ' Delete extra files coming from the chrome extension
-    'On Error Resume Next
-    'For x = 1 To 99
-    '    file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar (" & x & ").txt"
-    '    Kill file
-    'Next
-    '    file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
-    '    Kill file
-    'On Error GoTo 0
+    On Error Resume Next
+    For x = 1 To 99
+        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar (" & x & ").txt"
+        Kill file
+    Next
+        file = "C:\Users\efeka\Downloads\BorsaGuncelFiyatlar.txt"
+        Kill file
+    On Error GoTo 0
     
     Range("$A$1").Select
     Application.DisplayAlerts = True
